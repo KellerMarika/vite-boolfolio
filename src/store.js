@@ -9,7 +9,9 @@ export const store = reactive({
  router: null,
  isAdmin: false,
 
- rootApi_Url: 'http://127.0.0.1:8000',
+ backedRootUrl: 'http://127.0.0.1:8000',
+projects: [],
+pagination:[],
 
  currentRoute: null,//route.(cerca in istanza)
  currentPage: null,
