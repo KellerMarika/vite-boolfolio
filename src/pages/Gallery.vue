@@ -5,7 +5,7 @@
       <h1 class="pb-3 text-uppercase">gallery: </h1>
 
       <!-- PAGINAZIONE SOPRA -->
-      <Pagination :pagination="pagination"></Pagination>
+      <Pagination :pagination="store.pagination"></Pagination>
 
 
 
@@ -20,11 +20,11 @@
 
 
         <!-- CARD -->
-        <ProjectsCard v-for="project in projects" :project='project'></ProjectsCard>
+        <ProjectsCard v-for="project in store.projects" :project='project'></ProjectsCard>
 
       </div>
       <!-- PAGINAZIONE SOPRA -->
-      <Pagination :pagination="pagination"></Pagination>
+      <Pagination :pagination="store.pagination"></Pagination>
     </div>
 </section>
 </template>
@@ -42,9 +42,9 @@ export default {
   data() {
     return {
       store,
-      router: store.router,
-      projects: store.projects,
-      pagination: store.pagination,
+      /*       router: [],
+            projects:[],
+            pagination: [], */
     }
   },
   methods: {
@@ -78,9 +78,9 @@ export default {
       })
         .then((resp) => {
           this.store.projects = resp.data.data;
-          this.store.pagination =this.omitKey(resp.data, "data");
-          this.store.pagination =this.omitKey(this.pagination, "path");
-          console.log(this.pagination);
+          this.store.pagination = this.omitKey(resp.data, "data");
+          console.log(this.store.projects);
+          console.log(this.store.pagination);
         });
     }
   },

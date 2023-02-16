@@ -3,32 +3,33 @@
   <ul class="pagination">
 
    <!--    <li class="page-item disabled">
-        <a class="page-link" href="{{ pagination.first_page_url }}">last</a>
-       </li> -->
+          <a class="page-link" href="{{ pagination.first_page_url }}">last</a>
+         </li> -->
 
-   <li class="page-item disabled">
-    <a class="page-link" href="{{ pagination.prev_page_url }}">Previous</a>
+   <!--    <li class="page-item disabled">
+     <a class="page-link" href="{{ pagination.prev_page_url }}">Previous</a>
+    </li>
+
+  -->
+
+   <li v-for="link in pagination.links" class="page-item" @click="fetchPageLists(link.label)">
+    <a class="page-link ">{{ link.label }}</a>
+    <span class="sr-only"></span>
    </li>
 
-
-
-   <li v-for="link in pagination.links" class="page-item">
-    <a class="page-link {{ link.active===true? 'active sr-only':'' }}" href="{{ link.url }}">{{ link.label }}</a>
-    <span class="sr-only">(current)</span>
-   </li>
-
-   <li class="page-item">
-    <a class="page-link" href="{{ pagination.next_page_url }}">Next</a>
-   </li>
+   <!--    <li class="page-item">
+     <a class="page-link" href="{{ pagination.next_page_url }}">Next</a>
+    </li> -->
 
    <!--   <li class="page-item disabled">
-        <a class="page-link" href="{{ pagination.last_page_url }}">last</a>
-       </li> -->
+          <a class="page-link" href="{{ pagination.last_page_url }}">last</a>
+         </li> -->
 
   </ul>
 </nav>
 </template>
 <script>
+import axios from "axios";
 import { store } from '../../store';
 export default {
  props: {
@@ -54,11 +55,38 @@ export default {
  data() {
   return {
    store,
+   current: null,
   }
  },
  methods: {
 
-  fetchLists(page=2) {
+  /* FUNZIONE ESCLUDI CHIAVE DA OGGETTO */
+  /** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
+   * 
+   * @param {object} obj 
+   * @param {string} omitKey 
+   */
+  omitKey(obj, omitKey) {
+   return Object.keys(obj).reduce((result, key) => {
+    if (key !== omitKey) {
+     result[key] = obj[key];
+    }
+    return result;
+   }, {});
+  },
+
+  /**FUNZIONE RECUPERA PROGETTI e PAGINAZIONE
+     * 
+     * @param {array} categoriesList 
+     * 
+     */
+    a(page){
+     console.log(page);
+     this.current = page;
+     console.log(this.current);
+    },
+  fetchPageLists(page) {
+   this.current = page
    /* axios.get(`${this.store.rootApi_Url}${index}` */
    axios.get(`${this.store.backedRootUrl}/api/projects?page=${page}`, {
     /*      params: {
@@ -68,28 +96,14 @@ export default {
     .then((resp) => {
      this.store.projects = resp.data.data;
      this.store.pagination = this.omitKey(resp.data, "data");
-     this.store.pagination = this.omitKey(this.pagination, "path");
-     console.log(this.pagination);
+     console.log(this.store.projects);
+     console.log(this.store.pagination);
     });
   }
-  /*  onChange(genresToActivate, gender) {
-     if (this.activeAll === true) {
-       this.activeAll = false
-       genresToActivate = 0
-       genresToActivate.push(gender)
-     }
-     console.log("All", this.activeAll, "lista", this.category.genresList.length, "filter", genresToActivate.length)
-   },
-   setAllGenresActive(genresToActivate) {
-     if (this.activeAll === true) {
-       genresToActivate = this.category.genresList
-     } else {
-       genresToActivate.length = 0
-     }
-     console.log("All", this.activeAll, "lista", "filter", genresToActivate.length)
-   }, */
+
  },
  mounted() {
+
  }
 }
 </script>
