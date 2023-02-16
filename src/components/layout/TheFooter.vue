@@ -1,5 +1,5 @@
 <template>
- <nav class="navbar ">
+ <nav class="navbar">
   <div class="container">
    <h1>NAV</h1>
 
@@ -12,13 +12,7 @@
 export default {
  data() {
   return {
-   navItems: [
-    {
-     /*  label: "Home",
-      routeName: "home", */
-    },
-
-   ],
+  
   };
  },
 };

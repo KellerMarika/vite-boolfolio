@@ -23,26 +23,6 @@ export default {
   },
   methods: {
 
-    /**FUNZIONE RECUPERA PROGETTI e PAGINAZIONE
-     * 
-     * @param {array} categoriesList 
-     * 
-     */
-    fetchLists() {
-      /* axios.get(`${this.store.rootApi_Url}${index}` */
-      axios.get(`${this.store.rootApi_Url}/api/projects`, {
-        /*      params: {
-               //	query: , 
-             } */
-      })
-        .then((resp) => {
-          this.projects = resp.data.data;
-          this.projectsLinks = resp.data.links;
-          console.log(resp);
-
-        });
-    }
-
   },
   mounted() {
   },
