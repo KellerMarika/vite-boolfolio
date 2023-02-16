@@ -5,7 +5,7 @@
       <h1 class="pb-3 text-uppercase">gallery: </h1>
 
       <!-- PAGINAZIONE SOPRA -->
-      <Pagination :pagination="store.pagination"></Pagination>
+      <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
 
 
 
@@ -20,11 +20,11 @@
 
 
         <!-- CARD -->
-        <ProjectsCard v-for="project in store.projects" :project='project'></ProjectsCard>
+        <ProjectsCard v-for="project in projects" :project='project '></ProjectsCard>
 
       </div>
       <!-- PAGINAZIONE SOPRA -->
-      <Pagination :pagination="store.pagination"></Pagination>
+      <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
     </div>
 </section>
 </template>
@@ -42,9 +42,9 @@ export default {
   data() {
     return {
       store,
-      /*       router: [],
-            projects:[],
-            pagination: [], */
+      router: [],
+      projects: [],
+      pagination: [],
     }
   },
   methods: {
@@ -69,23 +69,22 @@ export default {
        * @param {array} categoriesList 
        * 
        */
-    fetchLists() {
+    fetchProjectLists(page) {
       /* axios.get(`${this.store.rootApi_Url}${index}` */
-      axios.get(`${this.store.backedRootUrl}/api/projects`, {
-        /*      params: {
-               //	query: , 
-             } */
+      if(!page){page=1}
+      axios.get(`${this.store.backedRootUrl}/api/projects?page=${page}`, {
+  
       })
         .then((resp) => {
-          this.store.projects = resp.data.data;
-          this.store.pagination = this.omitKey(resp.data, "data");
-          console.log(this.store.projects);
-          console.log(this.store.pagination);
+          this.projects = resp.data.data;
+          this.pagination = this.omitKey(resp.data, "data");
+          console.log(this.projects);
+          console.log(this.pagination);
         });
     }
   },
   mounted() {
-    this.fetchLists()
+    this.fetchProjectLists()
   },
   created() {
   }
