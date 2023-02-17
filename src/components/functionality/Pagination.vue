@@ -2,33 +2,25 @@
  <nav aria-label="...">
   <ul class="pagination">
 
-   <!--    <li class="page-item disabled">
-        <a class="page-link" href="{{ pagination.first_page_url }}">last</a>
-       </li> -->
 
-   <li class="page-item disabled">
-    <a class="page-link" href="{{ pagination.prev_page_url }}">Previous</a>
+
+   <li v-for="link in pagination.links"
+
+       @click="fetchProjectLists(getPageNumber(link, pagination))"
+
+       class="page-item">
+
+    <a class="page-link" :disabled="SetPageDisabled(link, pagination) ? 'disabled' : ''" :class="setPageActive(link)">{{
+     getPageName(link) }}</a>
+
    </li>
 
-
-
-   <li v-for="link in pagination.links" class="page-item">
-    <a class="page-link {{ link.active===true? 'active sr-only':'' }}" href="{{ link.url }}">{{ link.label }}</a>
-    <span class="sr-only">(current)</span>
-   </li>
-
-   <li class="page-item">
-    <a class="page-link" href="{{ pagination.next_page_url }}">Next</a>
-   </li>
-
-   <!--   <li class="page-item disabled">
-        <a class="page-link" href="{{ pagination.last_page_url }}">last</a>
-       </li> -->
 
   </ul>
 </nav>
 </template>
 <script>
+import axios from "axios";
 import { store } from '../../store';
 export default {
  props: {
@@ -54,42 +46,125 @@ export default {
  data() {
   return {
    store,
+   link_obj: {
+    label: null,
+    class: null,
+   },
+
   }
  },
  methods: {
 
-  fetchLists(page=2) {
-   /* axios.get(`${this.store.rootApi_Url}${index}` */
-   axios.get(`${this.store.backedRootUrl}/api/projects?page=${page}`, {
-    /*      params: {
-           //	query: , 
-         } */
-   })
-    .then((resp) => {
-     this.store.projects = resp.data.data;
-     this.store.pagination = this.omitKey(resp.data, "data");
-     this.store.pagination = this.omitKey(this.pagination, "path");
-     console.log(this.pagination);
-    });
-  }
-  /*  onChange(genresToActivate, gender) {
-     if (this.activeAll === true) {
-       this.activeAll = false
-       genresToActivate = 0
-       genresToActivate.push(gender)
-     }
-     console.log("All", this.activeAll, "lista", this.category.genresList.length, "filter", genresToActivate.length)
-   },
-   setAllGenresActive(genresToActivate) {
-     if (this.activeAll === true) {
-       genresToActivate = this.category.genresList
+  /* EMIT */
+  fetchProjectLists(page) {
+   this.$emit("fetchProjectLists", page)
+  },
+
+  /* COMPUTED CHE NON VANNO COL THIS */
+
+  getPageNumber(link, pagination) {
+
+   if (isNaN(link.label)) {
+
+
+    if (link.label.includes('Previous')) {
+     if (pagination.current_page - 1 <= 1) {
+      return 1
+
      } else {
-       genresToActivate.length = 0
+      return pagination.current_page - 1
      }
-     console.log("All", this.activeAll, "lista", "filter", genresToActivate.length)
-   }, */
+
+    } else if (link.label.includes('Next')) {
+
+     if (pagination.current_page + 1 < pagination.last_page) {
+      return pagination.current_page + 1
+     } else {
+      return pagination.last_page
+     }
+    }
+   } else {
+    return link.label
+   }
+  },
+
+  getPageName(link) {
+   if (isNaN(link.label)) {
+    if (link.label.includes('Previous')) {
+
+     return 'previous'
+
+    } else if (link.label.includes('Next')) {
+
+     return 'next'
+    }
+   } else {
+    return link.label
+   }
+  },
+
+  SetPageDisabled(link, pagination) {
+
+   if (isNaN(link.label)) {
+
+    if (link.label.includes('Previous') && pagination.current_page <= 1) {
+     return '1'
+
+    } else if (link.label.includes('Next') && pagination.current_page >= pagination.last_page) {
+     return '1'
+    }
+   }
+  },
+  setPageActive(link) {
+   if (link.active === true)
+    return "active"
+  }
+
+
+
+ },
+
+ computed: {
+  /*   getPageName() {
+     if (isNan(this.link.label)) {
+      if (this.link.label.includes('Previous')) {
+  
+       return 'previous'
+      } else if (this.link.label.includes('Next')) {
+       return 'next'
+      } else {
+       return this.link.label
+      }
+     }
+    },
+    SetPageDisabled() {
+     if (this.pagination.current_page <= 1 || this.pagination.current_page >= this.pagination.last_page) {
+      return 'true'
+     }
+  
+    },
+    setPageActive() {
+     if (this.link.active === true)
+      return "active"
+    } */
  },
  mounted() {
+
  }
 }
 </script>
+
+<style lang="scss" scoped>
+@use "../../styles/generic.scss";
+@use "../../styles/partials/variables" as *;
+
+
+/* ADMIN/PROJECTS */
+.pagination {
+ li a.active {
+  background-color: tomato;
+ }
+
+
+}
+</style>
