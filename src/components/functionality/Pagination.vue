@@ -2,28 +2,19 @@
  <nav aria-label="...">
   <ul class="pagination">
 
-   <!--    <li class="page-item disabled">
-          <a class="page-link" href="{{ pagination.first_page_url }}">last</a>
-         </li> -->
 
-   <!--    <li class="page-item disabled">
-     <a class="page-link" href="{{ pagination.prev_page_url }}">Previous</a>
-    </li>
 
-  -->
+   <li v-for="link in pagination.links"
 
-   <li v-for="link in pagination.links" class="page-item" @click="fetchPageLists(link.label)">
-    <a class="page-link ">{{ link.label }}</a>
-    <span class="sr-only"></span>
+       @click="fetchProjectLists(getPageNumber(link, pagination))"
+
+       class="page-item">
+
+    <a class="page-link" :disabled="SetPageDisabled(link, pagination) ? 'disabled' : ''" :class="setPageActive(link)">{{
+     getPageName(link) }}</a>
+
    </li>
 
-   <!--    <li class="page-item">
-     <a class="page-link" href="{{ pagination.next_page_url }}">Next</a>
-    </li> -->
-
-   <!--   <li class="page-item disabled">
-          <a class="page-link" href="{{ pagination.last_page_url }}">last</a>
-         </li> -->
 
   </ul>
 </nav>
@@ -55,55 +46,125 @@ export default {
  data() {
   return {
    store,
-   current: null,
+   link_obj: {
+    label: null,
+    class: null,
+   },
+
   }
  },
  methods: {
 
-  /* FUNZIONE ESCLUDI CHIAVE DA OGGETTO */
-  /** omit({ a: 1, b: 2, c: 3 }, 'c')  // {a: 1, b: 2}
-   * 
-   * @param {object} obj 
-   * @param {string} omitKey 
-   */
-  omitKey(obj, omitKey) {
-   return Object.keys(obj).reduce((result, key) => {
-    if (key !== omitKey) {
-     result[key] = obj[key];
-    }
-    return result;
-   }, {});
+  /* EMIT */
+  fetchProjectLists(page) {
+   this.$emit("fetchProjectLists", page)
   },
 
-  /**FUNZIONE RECUPERA PROGETTI e PAGINAZIONE
-     * 
-     * @param {array} categoriesList 
-     * 
-     */
-    a(page){
-     console.log(page);
-     this.current = page;
-     console.log(this.current);
-    },
-  fetchPageLists(page) {
-   this.current = page
-   /* axios.get(`${this.store.rootApi_Url}${index}` */
-   axios.get(`${this.store.backedRootUrl}/api/projects?page=${page}`, {
-    /*      params: {
-           //	query: , 
-         } */
-   })
-    .then((resp) => {
-     this.store.projects = resp.data.data;
-     this.store.pagination = this.omitKey(resp.data, "data");
-     console.log(this.store.projects);
-     console.log(this.store.pagination);
-    });
+  /* COMPUTED CHE NON VANNO COL THIS */
+
+  getPageNumber(link, pagination) {
+
+   if (isNaN(link.label)) {
+
+
+    if (link.label.includes('Previous')) {
+     if (pagination.current_page - 1 <= 1) {
+      return 1
+
+     } else {
+      return pagination.current_page - 1
+     }
+
+    } else if (link.label.includes('Next')) {
+
+     if (pagination.current_page + 1 < pagination.last_page) {
+      return pagination.current_page + 1
+     } else {
+      return pagination.last_page
+     }
+    }
+   } else {
+    return link.label
+   }
+  },
+
+  getPageName(link) {
+   if (isNaN(link.label)) {
+    if (link.label.includes('Previous')) {
+
+     return 'previous'
+
+    } else if (link.label.includes('Next')) {
+
+     return 'next'
+    }
+   } else {
+    return link.label
+   }
+  },
+
+  SetPageDisabled(link, pagination) {
+
+   if (isNaN(link.label)) {
+
+    if (link.label.includes('Previous') && pagination.current_page <= 1) {
+     return '1'
+
+    } else if (link.label.includes('Next') && pagination.current_page >= pagination.last_page) {
+     return '1'
+    }
+   }
+  },
+  setPageActive(link) {
+   if (link.active === true)
+    return "active"
   }
 
+
+
+ },
+
+ computed: {
+  /*   getPageName() {
+     if (isNan(this.link.label)) {
+      if (this.link.label.includes('Previous')) {
+  
+       return 'previous'
+      } else if (this.link.label.includes('Next')) {
+       return 'next'
+      } else {
+       return this.link.label
+      }
+     }
+    },
+    SetPageDisabled() {
+     if (this.pagination.current_page <= 1 || this.pagination.current_page >= this.pagination.last_page) {
+      return 'true'
+     }
+  
+    },
+    setPageActive() {
+     if (this.link.active === true)
+      return "active"
+    } */
  },
  mounted() {
 
  }
 }
 </script>
+
+<style lang="scss" scoped>
+@use "../../styles/generic.scss";
+@use "../../styles/partials/variables" as *;
+
+
+/* ADMIN/PROJECTS */
+.pagination {
+ li a.active {
+  background-color: tomato;
+ }
+
+
+}
+</style>
