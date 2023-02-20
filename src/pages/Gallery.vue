@@ -78,6 +78,7 @@ export default {
         .then((resp) => {
           this.projects = resp.data.data;
           this.pagination = this.omitKey(resp.data, "data");
+          console.log(resp)
         });
     }
   },

@@ -1,7 +1,22 @@
 <template>
-  <h1 class="text-uppercase">home</h1>
+  
 
+  <!-- JUMBO -->
 
+  <div class="container">
+    <h1 class="text-center">AMBACABANANE</h1>
+
+    <router-view v-slot="{ Component }">
+<!-- la transizione non c'è ma si fa cosi -->
+      <transition name="fade">
+
+        <component :is="Component" :projects="projects" />
+
+      </transition>
+
+    </router-view>
+
+  </div>
 
 </template>
 
