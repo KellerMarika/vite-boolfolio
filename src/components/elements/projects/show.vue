@@ -1,13 +1,13 @@
 <template>
   <h1 class="text-uppercase">SHOW</h1>
 
-  <div class="card mb-3">
-    <img src="..." class="card-img-top" alt="...">
+  <div class="card mb-3" v-if="project">
+    <!-- <img :src="store.backedRootUrl + '/storage/' +"
+    class="card-img-top" alt="..."> -->
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.
-        This content is a little bit longer.</p>
-      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      <h5 class="card-title"><!-- {{ project.title }} --></h5>
+      <p class="card-text"><!-- {{ project.description }} --></p>
+      <p class="card-text"><small class="text-muted">Last updated <!-- {{ project.updated_at }} --></small></p>
     </div>
   </div>
 </template>
@@ -22,37 +22,37 @@ export default {
   data() {
     return {
       store,
-      priject: null
+      project: null
     }
   },
   methods: {
+    /* WRAPPERAXIOS.Show(RouteRoot/apiRoute/apiParam) accetta 3 argomenti */
 
-/* WRAPPERAXIOS.Show(RouteRoot/apiRoute/apiParam) accetta 3 argomenti */
-  
     /**FUNZIONE RECUPERA PROGETT0 e PAGINAZIONE
        * 
        * @param {array} categoriesList 
        * 
        */
-       fetchProject(apiRoute,apiParam, apiParam) {
-      axios.get(`${this.store.backedRootUrl}${apiRoute}${apiParam}`, {
+    fetchProject(apiRoute) {
 
-        params: filterParams
+      let apiUrl = `${this.store.backedRootUrl}/api${apiRoute}`
 
-
+      console.log(apiUrl)
+      axios.get(`${apiUrl}`, {
       })
         .then((resp) => {
           this.project = resp.data;
-          console.log(resp)
+          console.log(this.project)
+          console.log(this.project.title)
 
         });
     }
   },
   mounted() {
-    console.log(this.$route.params)
-     this.fetchProject(this.$route.meta.apiRoute,this.$route.params.id,this.$route.params.id); 
+    this.fetchProject(this.$route.fullPath);
   },
   created() {
+
   }
 }
 </script>

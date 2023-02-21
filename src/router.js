@@ -52,66 +52,66 @@ const router = createRouter({
       path: "/projects",
       name: "Projects",
       component: projects_Pg,
-      params: {/* in post */},
-      meta: { },
+      params: {/* in post */ },
+      meta: {},
       children: [
 
         //index        
         {
-          path: "",
+          path: "/projects",
           name: "projects.index",
-        component: projectsIndex_Pg,
-        meta: { apiRoute: "/api/projects"}
+          component: projectsIndex_Pg,
+
         },
-    //show
-    {
-      path: "/:id",
-      name: "projects.show",
-      component: projectsShow_Pg,
-      meta: { apiRoute: "/api/projects/"}
-
-    },
-    //create
-    {
-      path: "create",
-      name: "projects.create",
-      component: projectsCreate_Pg,
-      meta: { requiresAuth: false },
-
-    },
-    //edit
-    {
-      path: "/projects/:id/edit",
-      name: "projects.edit",
-      component: projectsEdit_Pg,
-      meta: { requiresAuth: false },
-
-    },
-  ],
-},
-  {
-    // Cattura qualsiasi altra rotta non definita sopra.
-    path: "/:catchAll(.*)",
-    name: "not-found",
-    component: NotFound_Pg,
-  },
-   /*  {
-      path: "/",
-      name: "home",
-      component: Ambacabanane_Pg,
-      //       meta: { requiresAuth: false }, 
-      children: [
+        //show
         {
-          //metto '' perchè di default vedo a
-          path: '',
-          component: A,
+          path: "/projects/:id",
+          name: "projects.show",
+          component: projectsShow_Pg,
+
+
         },
-        //ma se scrivo "vedo b"
+        //create
         {
-          path: 'b',
-          component: B,
-        },],
-    }, */
+          path: "create",
+          name: "projects.create",
+          component: projectsCreate_Pg,
+          meta: { requiresAuth: false },
+
+        },
+        //edit
+        {
+          path: "/projects/:id/edit",
+          name: "projects.edit",
+          component: projectsEdit_Pg,
+          meta: { requiresAuth: false },
+
+        },
+      ],
+    },
+    {
+      // Cattura qualsiasi altra rotta non definita sopra.
+      path: "/:catchAll(.*)",
+      name: "not-found",
+      component: NotFound_Pg,
+    },
+    /*  {
+       path: "/",
+       name: "home",
+       component: Ambacabanane_Pg,
+       //       meta: { requiresAuth: false }, 
+       children: [
+         {
+           //metto '' perchè di default vedo a
+           path: '',
+           component: A,
+         },
+         //ma se scrivo "vedo b"
+         {
+           path: 'b',
+           component: B,
+         },],
+     }, */
   ]
 });
 

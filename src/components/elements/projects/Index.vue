@@ -77,8 +77,10 @@ export default {
        * 
        */
     fetchProjectLists(apiRoute, filterParams) {
+
+      let apiUrl = `${this.store.backedRootUrl}/api${apiRoute}`
     /*   console.log(filterParams) */
-      axios.get(`${this.store.backedRootUrl}${apiRoute}`, {
+      axios.get(`${apiUrl}`, {
         params: filterParams
       })
         .then((resp) => {
@@ -89,7 +91,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchProjectLists(this.$route.meta.apiRoute, this.filterParams)
+    this.fetchProjectLists(this.$route.fullPath, this.filterParams)
   },
   created() {
   }
