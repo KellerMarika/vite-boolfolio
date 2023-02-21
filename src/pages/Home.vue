@@ -26,6 +26,11 @@ export default {
     }
   },
   methods: {
+
+
+    try(){
+      console.log("LA ROTTA E'",this.$route)
+    },
     /**FUNZIONE RECUPERA PROGETTI e PAGINAZIONE
        * 
        * @param {array} categoriesList 
@@ -45,10 +50,14 @@ export default {
     },
   },
   mounted() {
+   
     fetch(this.backedRootUrl, this.routeKey, this.params);
+
+ 
   },
   created() {
-    this.fetchProjectLists(1)
+    this.fetchProjectLists(1);
+
   }
 }
 </script>

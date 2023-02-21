@@ -28,10 +28,10 @@ export function fetch(backedRootUrl, routeKey, my_params,return1,return2=null) {
     }, */
  })
   .then((resp) => {
-   console.log(my_params)
+/*    console.log(my_params)
 
    console.log(resp.config.params)
-   console.log(resp)
+   console.log(resp) */
 
  
   });

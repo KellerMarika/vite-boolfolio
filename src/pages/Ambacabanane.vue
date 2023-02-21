@@ -23,11 +23,10 @@
 <script>
 import axios from "axios";
 import { store, fetch } from '../store';
-import A from "./A.vue"
-import B from "./B.vue"
+
 
 export default {
-  components: { A },
+  components: {  },
   data() {
     return {
       store,
@@ -61,6 +60,8 @@ export default {
   },
   mounted() {
     fetch(this.backedRootUrl, this.routeKey, this.params);
+    
+    console.log(this.$route)
   },
   created() {
     this.fetchProjectLists(1)
