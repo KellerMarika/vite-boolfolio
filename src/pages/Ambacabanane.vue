@@ -1,18 +1,32 @@
 <template>
-  <h1 class="text-uppercase">home</h1>
+  
 
+  <!-- JUMBO -->
 
+  <div class="container">
+    <h1 class="text-center">AMBACABANANE</h1>
+
+    <router-view v-slot="{ Component }">
+<!-- la transizione non c'è ma si fa cosi -->
+      <transition name="fade">
+
+        <component :is="Component" :projects="projects" />
+
+      </transition>
+
+    </router-view>
+
+  </div>
 
 </template>
 
 <script>
 import axios from "axios";
 import { store, fetch } from '../store';
-import A from "./A.vue"
-import B from "./B.vue"
+
 
 export default {
-  components: { A },
+  components: {  },
   data() {
     return {
       store,
@@ -26,11 +40,6 @@ export default {
     }
   },
   methods: {
-
-
-    try(){
-      console.log("LA ROTTA E'",this.$route)
-    },
     /**FUNZIONE RECUPERA PROGETTI e PAGINAZIONE
        * 
        * @param {array} categoriesList 
@@ -50,14 +59,12 @@ export default {
     },
   },
   mounted() {
-   
     fetch(this.backedRootUrl, this.routeKey, this.params);
-
- 
+    
+    console.log(this.$route)
   },
   created() {
-    this.fetchProjectLists(1);
-
+    this.fetchProjectLists(1)
   }
 }
 </script>

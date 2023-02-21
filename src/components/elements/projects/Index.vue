@@ -11,7 +11,6 @@
 
       <div class="card-columns mt-2 mb-5">
 
-
         <!-- COMPONENTE CREATE PROJECT-->
         <!-- href="{{ route('admin.projects.create') }}" -->
         <a class="add-project-btn card my-4 p-3 text-uppercase  overflow-hidden shadow">
@@ -19,22 +18,27 @@
         </a>
 
 
-        <!-- CARD -->
-        <ProjectsCard v-for="project in projects" :project='project '></ProjectsCard>
+        <!-- SHOW LINK -->
+        <router-link to="/:id" v-slot="{ Component }">
+          <!-- CARD -->
+          <ProjectsCard :is="Component" v-for="project in projects" :project='project'></ProjectsCard>
+        </router-link>
+
+        <ProjectsCard v-for="project in projects" :project='project'></ProjectsCard>
 
       </div>
       <!-- PAGINAZIONE SOPRA -->
       <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
     </div>
-</section>
+  </section>
 </template>
 
 <script>
 import axios from "axios";
-import { store } from '../store';
+import { store } from '../../../store';
 
-import Pagination from "../components/functionality/Pagination.vue";
-import ProjectsCard from "../components/elements/projects/ProjectsCard.vue";
+import Pagination from "../../functionality/Pagination.vue";
+import ProjectsCard from "./ProjectsCard.vue";
 
 
 export default {
@@ -69,28 +73,28 @@ export default {
        * @param {array} categoriesList 
        * 
        */
-    fetchProjectLists(page) {
-      /* axios.get(`${this.store.rootApi_Url}${index}` */
-      if(!page){page=1}
-      axios.get(`${this.store.backedRootUrl}/api/projects?page=${page}`, {
-  
+    fetchProjectLists(apiRoute, filterParams) {
+    /*   console.log(filterParams) */
+      axios.get(`${this.store.backedRootUrl}${apiRoute}`, {
+        params: filterParams
       })
         .then((resp) => {
           this.projects = resp.data.data;
           this.pagination = this.omitKey(resp.data, "data");
+
         });
-    }
+    },
   },
   mounted() {
-    this.fetchProjectLists()
+    this.fetchProjectLists(this.$route.meta.apiRoute, this.filterParams)
   },
   created() {
   }
 }
 </script>
 <style lang="scss" scoped>
-@use "../styles/generic.scss";
-@use "../styles/partials/variables" as *;
+@use "../../../styles/generic.scss";
+@use "../../../styles/partials/variables" as *;
 @import 'bootstrap/scss/_functions';
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
