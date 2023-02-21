@@ -26,25 +26,23 @@ export default {
     }
   },
   methods: {
-    /**FUNZIONE RECUPERA PROGETTI e PAGINAZIONE
+
+/* WRAPPERAXIOS.Show(RouteRoot/apiRoute/apiParam) accetta 3 argomenti */
+  
+    /**FUNZIONE RECUPERA PROGETT0 e PAGINAZIONE
        * 
        * @param {array} categoriesList 
        * 
        */
-       fetchProject(apiRoute,apiParam, filterParams) {
-      
-  /*     console.log(`${this.store.backedRootUrl}${apiRoute}`)
-      console.log(`${this.store.backedRootUrl}${apiRoute}${ this.$route.params.id}`) */
-     // axios.get(`${this.store.backedRootUrl}${apiRoute}${ this.$route.params.id}`,
+       fetchProject(apiRoute,apiParam, apiParam) {
       axios.get(`${this.store.backedRootUrl}${apiRoute}${apiParam}`, {
-       
+
         params: filterParams
 
 
       })
         .then((resp) => {
-          this.projects = resp.data;
-      /*     this.pagination = this.omitKey(resp.data, "data"); */
+          this.project = resp.data;
           console.log(resp)
 
         });
@@ -52,7 +50,7 @@ export default {
   },
   mounted() {
     console.log(this.$route.params)
-     this.fetchProject(this.$route.meta.apiRoute,this.$route.params.id,this.$route.params); 
+     this.fetchProject(this.$route.meta.apiRoute,this.$route.params.id,this.$route.params.id); 
   },
   created() {
   }

@@ -68,6 +68,9 @@ export default {
       }, {});
     },
 
+
+/* WRAPPERAXIOS.index(RouteRoot/apiRoute/apiParams-filterParams) accetta 3 argomenti */
+
     /**FUNZIONE RECUPERA PROGETTI e PAGINAZIONE
        * 
        * @param {array} categoriesList 
