@@ -5,9 +5,9 @@
     <!-- <img :src="store.backedRootUrl + '/storage/' +"
     class="card-img-top" alt="..."> -->
     <div class="card-body">
-      <h5 class="card-title"><!-- {{ project.title }} --></h5>
-      <p class="card-text"><!-- {{ project.description }} --></p>
-      <p class="card-text"><small class="text-muted">Last updated <!-- {{ project.updated_at }} --></small></p>
+      <h5 class="card-title">{{ project.title }} </h5>
+      <p class="card-text"> {{ project.description }}</p>
+      <p class="card-text"><small class="text-muted">Last updated {{ project.updated_at }}</small></p>
     </div>
   </div>
 </template>
@@ -35,6 +35,8 @@ export default {
        */
     fetchProject(apiRoute) {
 
+     
+
       let apiUrl = `${this.store.backedRootUrl}/api${apiRoute}`
 
       console.log(apiUrl)
@@ -42,17 +44,19 @@ export default {
       })
         .then((resp) => {
           this.project = resp.data;
-          console.log(this.project)
-          console.log(this.project.title)
-
+          this.GetPageTitle(this.project.title);
         });
-    }
+    },
+    /* TITOLO */
+    GetPageTitle(p){
+      document.title="project: " + p
+    },
   },
   mounted() {
     this.fetchProject(this.$route.fullPath);
+
   },
   created() {
-
   }
 }
 </script>

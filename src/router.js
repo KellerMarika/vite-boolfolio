@@ -52,8 +52,6 @@ const router = createRouter({
       path: "/projects",
       name: "Projects",
       component: projects_Pg,
-      params: {/* in post */ },
-      meta: {},
       children: [
 
         //index        
