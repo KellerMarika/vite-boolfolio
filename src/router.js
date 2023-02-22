@@ -8,12 +8,9 @@ import B from "./pages/B.vue";
 
 import projects_Pg from "./pages/Projects.vue";
 import projectsIndex_Pg from "./components/elements/projects/Index.vue";
-import projectsCreate_Pg from "./components/elements/projects/create.vue";
+import projectsCreate_Pg from "./components/elements/projects/Create.vue";
 import projectsShow_Pg from "./components/elements/projects/Show.vue";
 import projectsEdit_Pg from "./components/elements/projects/Edit.vue";
-
-
-
 
 
 import Home_Pg from "./pages/Home.vue";
@@ -66,16 +63,13 @@ const router = createRouter({
           path: "/projects/:id",
           name: "projects.show",
           component: projectsShow_Pg,
-
-
         },
         //create
         {
-          path: "create",
+          path: "/projects/create",
           name: "projects.create",
           component: projectsCreate_Pg,
           meta: { requiresAuth: false },
-
         },
         //edit
         {
