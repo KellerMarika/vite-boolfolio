@@ -8,26 +8,25 @@
       <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
 
 
-
       <div class="card-columns mt-2 mb-5">
 
-        <!-- COMPONENTE CREATE PROJECT-->
-        <!-- href="{{ route('admin.projects.create') }}" -->
-        <a class="add-project-btn card my-4 p-3 text-uppercase  overflow-hidden shadow">
+        <!--CREATE PROJECT -->
+        <router-link :to="{ name: 'projects.create' }"
+            class="add-project-btn card my-4 p-3 text-uppercase  overflow-hidden shadow">
           <h2 class=" m-0"><i class="fa fa-plus"></i> add new</h2>
-        </a>
-
-
-        <!-- SHOW LINK -->
-        <router-link to="/:id" v-slot="{ Component }">
-          <!-- CARD -->
-          <ProjectsCard :is="Component" v-for="project in projects" :project='project'></ProjectsCard>
         </router-link>
 
-        <ProjectsCard v-for="project in projects" :project='project'></ProjectsCard>
-
+        <!-- SHOW PROJECT -->
+        <router-link :to="{ name: 'projects.show', params: { id: project.id } }"
+            v-slot="{ SingleProjectCard }"
+            v-for="project in projects"
+            class="card  my-4 overflow-hidden shadow">
+          <!-- CARD -->
+          <ProjectsCard :is="SingleProjectCard" :project='project'></ProjectsCard>
+        </router-link>
       </div>
-      <!-- PAGINAZIONE SOPRA -->
+
+      <!-- PAGINAZIONE SOTTO -->
       <Pagination :pagination="pagination" @fetchProjectLists="fetchProjectLists"></Pagination>
     </div>
   </section>
@@ -68,30 +67,32 @@ export default {
       }, {});
     },
 
-    /**FUNZIONE RECUPERA PROGETTI e PAGINAZIONE
-       * 
+    /* WRAPPERAXIOS.index(RouteRoot/apiRoute/apiParams-filterParams) accetta 3 argomenti */
+    /**FUNZIONE RECUPERA PROGETTI e PAGINAZIONE 
        * @param {array} categoriesList 
-       * 
        */
     fetchProjectLists(apiRoute, filterParams) {
-    /*   console.log(filterParams) */
-      axios.get(`${this.store.backedRootUrl}${apiRoute}`, {
+
+      let apiUrl = `${this.store.backedRootUrl}/api${apiRoute}`
+      /*   console.log(filterParams) */
+      axios.get(`${apiUrl}`, {
         params: filterParams
       })
         .then((resp) => {
           this.projects = resp.data.data;
           this.pagination = this.omitKey(resp.data, "data");
-
         });
     },
   },
   mounted() {
-    this.fetchProjectLists(this.$route.meta.apiRoute, this.filterParams)
+    this.fetchProjectLists(this.$route.fullPath, this.filterParams)
   },
   created() {
   }
 }
 </script>
+
+
 <style lang="scss" scoped>
 @use "../../../styles/generic.scss";
 @use "../../../styles/partials/variables" as *;
@@ -102,6 +103,7 @@ export default {
 /* ADMIN/PROJECTS */
 .projects-index.container {
 
+
   .card-columns {
     @include media-breakpoint-up(md) {
       column-count: 3;
@@ -109,6 +111,16 @@ export default {
 
     @include media-breakpoint-up(xl) {
       column-count: 4;
+    }
+
+    .card {
+      text-decoration: none;
+
+      .add-project-btn {
+        background-color: transparentize($primary_color_light, .5);
+        color: $secondary_color;
+        border: 2px dashed $secondary_color;
+      }
     }
   }
 }
