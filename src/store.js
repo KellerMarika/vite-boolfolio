@@ -6,33 +6,33 @@ import { reactive } from "vue";
 
 export const store = reactive({
 
- //parametri 
- router: null,
- isAdmin: false,
+  //parametri 
+  router: null,
+  isAdmin: false,
 
- backedRootUrl: 'http://127.0.0.1:8000',
+  backedRootUrl: 'http://127.0.0.1:8000',
 
 });
 
-export function fetch(backedRootUrl, routeKey, my_params,return1,return2=null) {
+export function fetch(backedRootUrl, routeKey, my_params) {
 
- /*  console.log(my_params)
-  let route = `${backedRootUrl}${routeKey}`
-  console.log(route) */
- axios.get(`${backedRootUrl}${routeKey}`, {
+  /*  console.log(my_params)
+   let route = `${backedRootUrl}${routeKey}`
+   console.log(route) */
+  axios.get(`${backedRootUrl}${routeKey}`, {
 
-  params: my_params
-  /*   params: {
-      ...my_params,
-      a:"2" 
-    }, */
- })
-  .then((resp) => {
-/*    console.log(my_params)
+    params: my_params
+    /*   params: {
+        ...my_params,
+        a:"2" 
+      }, */
+  })
+    .then((resp) => {
+      /*    console.log(my_params)
+      
+         console.log(resp.config.params)
+         console.log(resp) */
+      return resp.data
 
-   console.log(resp.config.params)
-   console.log(resp) */
-
- 
-  });
+    });
 }
